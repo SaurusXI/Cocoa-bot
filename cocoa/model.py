@@ -32,59 +32,61 @@ class Schedule(base):
     EndTime = Column(Time, primary_key = True)
 
 
-session = sessionmaker(db)()
-base.metadata.create_all(db)
 
+class ModelService:
+    def __init__(self):
+        self.session = sessionmaker(db)()
+        base.metadata.create_all(db)
 
-def create_meeting(uid1: int, uid2: int):
-    meeting = Meeting(UID1 = uid1, UID2 = uid2)
-    session.add(meeting)
-    session.commit()
+    def add_meeting(self, uid1: int, uid2: int):
+        meeting = Meeting(UID1 = uid1, UID2 = uid2)
+        self.session.add(meeting)
+        self.session.commit()
 
-def delete_meeting(uid1: int, uid2: int):
-    meeting = session.query(Meeting).get((uid1, uid2))
-    session.delete(meeting)
-    session.commit()
+    def delete_meeting(self, uid1: int, uid2: int):
+        meeting = self.session.query(Meeting).get((uid1, uid2))
+        self.session.delete(meeting)
+        self.session.commit()
 
-def create_user(uid: int, description: str):
-    user = User(UID = uid, Description = description)
-    session.add(user)
-    session.commit()
+    def add_user(self, uid: int, description: str):
+        user = User(UID = uid, Description = description)
+        self.session.add(user)
+        self.session.commit()
 
-def read_user(uid: int):
-    user = session.query(User).get(uid)
-    return user
+    def read_user(self, uid: int):
+        user = self.session.query(User).get(uid)
+        return user
 
-def update_user(uid: int, description: str):
-    user = read_user(uid)
-    user.Description = description
-    session.commit()
+    def update_user(self, uid: int, description: str):
+        user = read_user(uid)
+        user.Description = description
+        self.session.commit()
 
-def delete_user(uid: int):
-    user = read_user(uid)from datetime import time
-    session.delete(user)
-    session.commit()
+    def delete_user(self, uid: int):
+        user = read_user(uid)from datetime import time
+        self.session.delete(user)
+        self.session.commit()
 
-def add_schedule(uid: int, start: time, end: time):
-    schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
-    session.add(schedule)
-    session.commit()
+    def add_schedule(self, uid: int, start: time, end: time):
+        schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
+        self.session.add(schedule)
+        self.session.commit()
 
-def get_user_schedules(uid: int):
-    schedules = session.query(Schedule).filter(Schedule.UID == uid)
-    return schedules
+    def get_user_schedules(self, uid: int):
+        schedules = self.session.query(Schedule).filter(Schedule.UID == uid)
+        return schedules
 
-def read_schedule(uid: int, start: time, end: time):
-    schedule = session.query(Schedule).get((uid, start, end))
-    return schedule
+    def read_schedule(self, uid: int, start: time, end: time):
+        schedule = self.session.query(Schedule).get((uid, start, end))
+        return schedule
 
-def update_schedule(uid: int, prevstart: time, prevend: time, newstart: time, newend: time):
-    schedule = read_schedule(uid, prevstart, prevend)
-    schedule.StartTime = newstart
-    schedule.EndTime = newend
-    session.commit()
+    def update_schedule(self, uid: int, prevstart: time, prevend: time, newstart: time, newend: time):
+        schedule = read_schedule(uid, prevstart, prevend)
+        schedule.StartTime = newstart
+        schedule.EndTime = newend
+        self.session.commit()
 
-def delete_schedule(uid: int, start: time, end: time):
-    schedule = read_schedule(uid, start, end)
-    session.delete(schedule)
-    session.commit()
+    def delete_schedule(self, uid: int, start: time, end: time):
+        schedule = read_schedule(uid, start, end)
+        self.session.delete(schedule)
+        self.session.commit()
