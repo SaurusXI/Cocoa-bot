@@ -9,21 +9,22 @@ db_string = "postgres://user:mysecretpassword@host/dbname"
 db = create_engine(db_string)
 base = declarative_base()
 
-
+# Declare tables
+# Meeting TABLE
 class Meeting(base):
     __tablename__ = 'meetings'
 
     UID1 = Column(Integer, primary_key = True)
     UID2 = Column(Integer, primary_key = True)
 
-
+# User TABLE
 class User(base):
     __tablename__ = 'users'
 
     UID = Column(Integer, primary_key = True)
     Description = Column(String)
 
-
+# Schedule TABLE
 class Schedule(base):
     __tablename__ = 'schedules'
 
@@ -32,12 +33,13 @@ class Schedule(base):
     EndTime = Column(DateTime, primary_key = True)
 
 
-
+# Main model class
 class ModelService:
     def __init__(self):
         self.session = sessionmaker(db)()
         base.metadata.create_all(db)
 
+    # Operations for Meeting
     def add_meeting(self, uid1: int, uid2: int):
         meeting = Meeting(UID1 = uid1, UID2 = uid2)
         self.session.add(meeting)
@@ -48,6 +50,7 @@ class ModelService:
         self.session.delete(meeting)
         self.session.commit()
 
+    # Operations for User
     def add_user(self, uid: int, description: str):
         user = User(UID = uid, Description = description)
         self.session.add(user)
@@ -58,15 +61,16 @@ class ModelService:
         return user
 
     def update_user(self, uid: int, description: str):
-        user = read_user(uid)
+        user = self.read_user(uid)
         user.Description = description
         self.session.commit()
 
     def delete_user(self, uid: int):
-        user = read_user(uid)
+        user = self.read_user(uid)
         self.session.delete(user)
         self.session.commit()
 
+    # Operations for Schedule
     def add_schedule(self, uid: int, start: datetime, end: datetime):
         schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
         self.session.add(schedule)
@@ -81,12 +85,12 @@ class ModelService:
         return schedule
 
     def update_schedule(self, uid: int, prevstart: datetime, prevend: datetime, newstart: datetime, newend: datetime):
-        schedule = read_schedule(uid, prevstart, prevend)
+        schedule = self.read_schedule(uid, prevstart, prevend)
         schedule.StartTime = newstart
         schedule.EndTime = newend
         self.session.commit()
 
     def delete_schedule(self, uid: int, start: datetime, end: datetime):
-        schedule = read_schedule(uid, start, end)
+        schedule = self.read_schedule(uid, start, end)
         self.session.delete(schedule)
         self.session.commit()
