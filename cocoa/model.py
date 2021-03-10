@@ -1,7 +1,7 @@
-from datetime import time
+from datetime import datetime
 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, String, Integer, Time
+from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
@@ -28,8 +28,8 @@ class Schedule(base):
     __tablename__ = 'schedules'
 
     UID = Column(Integer, primary_key = True)
-    StartTime = Column(Time, primary_key = True)
-    EndTime = Column(Time, primary_key = True)
+    StartTime = Column(DateTime, primary_key = True)
+    EndTime = Column(DateTime, primary_key = True)
 
 
 
@@ -63,11 +63,11 @@ class ModelService:
         self.session.commit()
 
     def delete_user(self, uid: int):
-        user = read_user(uid)from datetime import time
+        user = read_user(uid)
         self.session.delete(user)
         self.session.commit()
 
-    def add_schedule(self, uid: int, start: time, end: time):
+    def add_schedule(self, uid: int, start: datetime, end: datetime):
         schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
         self.session.add(schedule)
         self.session.commit()
@@ -76,17 +76,17 @@ class ModelService:
         schedules = self.session.query(Schedule).filter(Schedule.UID == uid)
         return schedules
 
-    def read_schedule(self, uid: int, start: time, end: time):
+    def read_schedule(self, uid: int, start: datetime, end: datetime):
         schedule = self.session.query(Schedule).get((uid, start, end))
         return schedule
 
-    def update_schedule(self, uid: int, prevstart: time, prevend: time, newstart: time, newend: time):
+    def update_schedule(self, uid: int, prevstart: datetime, prevend: datetime, newstart: datetime, newend: datetime):
         schedule = read_schedule(uid, prevstart, prevend)
         schedule.StartTime = newstart
         schedule.EndTime = newend
         self.session.commit()
 
-    def delete_schedule(self, uid: int, start: time, end: time):
+    def delete_schedule(self, uid: int, start: datetime, end: datetime):
         schedule = read_schedule(uid, start, end)
         self.session.delete(schedule)
         self.session.commit()
