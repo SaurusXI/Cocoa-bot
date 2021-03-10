@@ -19,6 +19,17 @@ class ConfigService:
         self.modelsvc.add_user(user.id, description)
         await channel.send("Awesome! Looks like we're good to go. Go ahead and schedule a session if you'd like")
 
+    async def modify_user(self, user: User, channel: TextChannel, client: Client):
+        await channel.send('Make changes to your description')
+
+        try:
+            updated_description = await client.wait_for('message', timeout = 300)
+        except asyncio.TimeoutError:
+            return await channel.send('Took too long, unable to update description')
+
+        self.modelsvc.update_user(user.id, updated_description)
+        await channel.send("User {}, your description has been updated !".format(user.id))
+
     async def delete_user(self, user: User, channel: TextChannel):
         self.modelsvc.delete_user(user.id)
         await channel.send("Done! Sad to see you go :(")
