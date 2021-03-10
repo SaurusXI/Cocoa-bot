@@ -98,9 +98,9 @@ class ModelService:
 
     def find_meetings(self, start: datetime, end: datetime, meeting_length: timedelta):
         potential_meetings = self.session.query(Schedule).filter(
-            _or(
-                _and(Schedule.StartTime <= start, Schedule.EndTime >= start),
-                _and(Schedule.StartTime >= start, Schedule.StartTime <= end)
+            or_(
+                and_(Schedule.StartTime <= start, Schedule.EndTime >= start),
+                and_(Schedule.StartTime >= start, Schedule.StartTime <= end)
             ))
 
         result = []
