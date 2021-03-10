@@ -65,7 +65,7 @@ def delete_user(uid: int):
     session.delete(user)
     session.commit()
 
-def add_schedule(uid: int, start: time, end: time):
+def create_schedule(uid: int, start: time, end: time):
     schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
     session.add(schedule)
     session.commit()
