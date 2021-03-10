@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import create_engine
+from sqlalchemy import and_, or_
 from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
@@ -30,7 +31,6 @@ class Schedule(base):
     UID = Column(Integer, primary_key = True)
     StartTime = Column(DateTime, primary_key = True)
     EndTime = Column(DateTime, primary_key = True)
-
 
 
 class ModelService:
@@ -90,3 +90,23 @@ class ModelService:
         schedule = read_schedule(uid, start, end)
         self.session.delete(schedule)
         self.session.commit()
+
+    def find_meetings(self, start: datetime, end: datetime, meeting_length: timedelta):
+        potential_meetings = self.session.query(Schedule).filter(
+            _or(
+                _and(Schedule.StartTime <= start, Schedule.EndTime >= start),
+                _and(Schedule.StartTime >= start, Schedule.StartTime <= end)
+            ))
+
+        result = []
+        for meeting in potential_meetings.all():
+            endtime = min(meeting.EndTime, end)
+            starttime = max(meeting.StartTime, start)
+            if endtime - starttime >= meeting_length:
+                result.append({
+                    'user': meeting.UID,
+                    'start': starttime,
+                    'end': endtime
+                })
+
+        return result
