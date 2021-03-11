@@ -23,5 +23,5 @@ class NotifService:
         except asyncio.TimeoutError:
             return await channel.send('Sorry, you took too long to make a choice.')
 
-        # To do : Call the booking service to book a meeting based on the user's choice/re-schedule the meeting/cancel the meeting
+        # TODO: Call the booking service to book a meeting based on the user's choice/re-schedule the meeting/cancel the meeting
         # self.bookingsvc.book_meeting(all_meetings,meeting_choice, ...)
