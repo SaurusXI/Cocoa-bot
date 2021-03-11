@@ -3,7 +3,8 @@ from model import ModelService
 from notifier import NotifService
 from discord import Client, TextChannel
 
-class Scheudler:
+
+class Scheduler:
     def __init__(self, modelsvc: ModelService, notifiersvc: NotifService, meeting_length: timedelta):
         self.meeting_length = meeting_length
         self.modelsvc = modelsvc
@@ -14,5 +15,6 @@ class Scheudler:
 
         potential_meetings = self.modelsvc.find_meetings(starttime, endtime, self.meeting_length)
 
-        # Call notifier service and send notification of possible meetings
-        self.notifiersvc.notify(potential_meetings, channel, client)
+        if potential_meetings:
+            # Call notifier service and send notification of possible meetings
+            self.notifiersvc.notify(potential_meetings, channel, client)

@@ -3,6 +3,7 @@ from discord import Client, TextChannel
 from model import ModelService
 from booking import BookingService
 
+
 # main class for notification service
 class NotifService:
     def __init__(self, modelsvc: ModelService, bookingsvc: BookingService):
@@ -13,11 +14,12 @@ class NotifService:
     async def notify(self, all_meetings, channel: TextChannel, client: Client):
         message_response = ''
         for meeting_info in all_meetings:
-            user_id,start,end = meeting_info['user'],meeting_info['start'],meeting_info['end']
-            message_response += 'Meeting with <@{}> from {} to {}'.format(user_id,start,end)
+            user_id, start, end = meeting_info['user'], meeting_info['start'], meeting_info['end']
+            message_response += 'Meeting with <@{}> from {} to {}'.format(user_id, start, end)
 
         # Print to the text channel
-        await channel.send("{}\n\nPlease choose which meeting you want to book, by typing out the User ID".format(message_response))
+        await channel.send(
+            "{}\n\nPlease choose which meeting you want to book, by typing out the User ID".format(message_response))
         try:
             meeting_choice = await client.wait_for('message', timeout=120)
         except asyncio.TimeoutError:
