@@ -52,6 +52,17 @@ class ModelService:
         self.session.delete(meeting)
         self.session.commit()
 
+    def get_meetings(self, uid: int):
+        meetings = self.session.query(Meeting).get(uid)
+        result = []
+        for meeting in meetings.all():
+            result.append({
+                'user1': meeting.UID1,
+                'user2': meeting.UID2,
+            })
+
+        return result
+
     # Operations for User
     def add_user(self, uid: int, description: str):
         user = User(UID = uid, Description = description)
