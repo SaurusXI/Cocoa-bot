@@ -18,6 +18,5 @@ class BookingService:
         self.modelsvc.delete_meeting(meeting_choice.UID1, meeting_choice.UID2)
 
     def reschedule_meeting(self, new_meeting_choice, old_meeting_choice, current_user_id):
-        other_user, start, end = new_meeting_choice['user'], new_meeting_choice['start'], new_meeting_choice['end']
-        self.modelsvc.add_meeting(other_user, current_user_id)
-        self.modelsvc.delete_meeting(old_meeting_choice.UID1, old_meeting_choice.UID2)
+        self.cancel_meeting(meeting_choice=old_meeting_choice)
+        self.book_meeting(meeting_choice=new_meeting_choice, current_user_id=current_user_id)
