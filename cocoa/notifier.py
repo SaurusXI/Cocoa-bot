@@ -1,5 +1,5 @@
 import asyncio
-from discord import Client, TextChannel
+from discord import Client, TextChannel, User
 from model import ModelService
 from booking import BookingService
 
@@ -47,6 +47,32 @@ class NotifierService:
         for meeting_info in all_meetings:
             user_id = meeting_info['user']
             if user_id == meeting_choice:
-                self.bookingsvc.cancel_meeting(meeting_info)
+                self.bookingsvc.cancel_meeting(user_id)
 
+    async def notify_reschedule(self, all_meetings, user: User, channel: TextChannel, client: Client):
+        await channel.send(
+            "Please type out your old meeting choice")
+        try:
+            old_meeting_choice = await client.wait_for('message', timeout=120)
+        except asyncio.TimeoutError:
+            return await channel.send('Sorry, you took too long.')
+        
+        # Ask for new meeting choice
+        message_response = ''
+        for meeting_info in all_meetings:
+            user_id, start, end = meeting_info['user'], meeting_info['start'], meeting_info['end']
+            message_response += 'Meeting with <@{}> from {} to {}'.format(user_id, start, end)
 
+        # Print to the text channel
+        await channel.send(
+            "{}\n\nPlease choose a new meeting, by typing out a new User ID".format(message_response))
+        try:
+            new_meeting_choice = await client.wait_for('message', timeout=120)
+        except asyncio.TimeoutError:
+            return await channel.send('Sorry, you took too long to make a choice.')
+
+        # Call the reschedule service
+        for meeting_info in all_meetings:
+            user_id = meeting_info['user']
+            if user_id == new_meeting_choice:
+                self.bookingsvc.reschedule_meeting(user_id, old_meeting_choice, user.id)
