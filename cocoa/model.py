@@ -24,6 +24,7 @@ class User(base):
 
     UID = Column(Integer, primary_key = True)
     Description = Column(String)
+    Username = Column(String)
 
 # Schedule TABLE
 class Schedule(base):
