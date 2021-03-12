@@ -12,8 +12,8 @@ class Scheduler:
 
     def schedule(self, uid: int, starttime: datetime, endtime: datetime, channel: TextChannel, client: Client):
         self.modelsvc.add_schedule(uid, starttime, endtime)
-
         potential_meetings = self.modelsvc.find_meetings(starttime, endtime, self.meeting_length)
+        potential_meetings = potential_meetings[0:5]
 
         if potential_meetings:
             # Call notifier service and send notification of possible meetings
