@@ -50,5 +50,3 @@ class Scheduler:
     def list_booked_meetings(self, user: User, channel: TextChannel):
         self.notifiersvc.notify_multiple_meetings(user, channel)
 
-    def delete_user(self, author):
-        self.modelsvc.delete_user(author)
