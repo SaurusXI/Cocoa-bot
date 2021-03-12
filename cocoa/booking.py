@@ -1,6 +1,6 @@
 import asyncio
 from model import ModelService
-
+from discord import User
 
 class BookingService:
     def __init__(self, modelsvc: ModelService):
@@ -20,3 +20,7 @@ class BookingService:
     def reschedule_meeting(self, new_meeting_choice, old_meeting_choice, current_user_id):
         self.cancel_meeting(meeting_choice=old_meeting_choice)
         self.book_meeting(meeting_choice=new_meeting_choice, current_user_id=current_user_id)
+
+    # List all booked meetings
+    def list_all_meetings(self, user_id):
+        self.modelsvc.get_meetings(user_id)

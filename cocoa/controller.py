@@ -20,7 +20,19 @@ class Controller:
         _, _, command = message.content.partition(' ')
         author, channel = message.author, message.channel
 
+        # User registration and related commands
         if command == 'setup':
             self.configsvc.register_user(author, channel, client)
-        elif command == 'schedule':
+        elif command == 'delete_me':
+            self.schedulersvc.delete_user(author, channel)
+        # Scheduling meetings and related commands
+        elif command == 'schedule_new':
             self.schedulersvc.schedule(author.id)
+        elif command == 'schedule_cancel':
+            self.schedulersvc.cancel(author.id, channel, client)
+        elif command == 'list_all_meetings':
+            self.schedulersvc.list_booked_meetings(author.id, channel)
+        else:
+            await channel.send(
+                "Wrong command."
+            )
