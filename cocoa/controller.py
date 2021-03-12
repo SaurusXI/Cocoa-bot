@@ -27,7 +27,7 @@ class Controller:
             self.schedulersvc.delete_user(author.id)
         # Scheduling meetings and related commands
         elif command == 'schedule_new':
-            self.schedulersvc.schedule(author.id)
+            self.schedulersvc.schedule(author.id, channel, client),
         elif command == 'schedule_cancel':
             self.schedulersvc.cancel(author.id, channel, client)
         elif command == 'list_all_meetings':

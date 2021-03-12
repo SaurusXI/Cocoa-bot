@@ -1,7 +1,26 @@
+import asyncio
 from datetime import datetime, timedelta
 from notifier import NotifierService
 from model import ModelService
 from discord import Client, TextChannel, User
+
+
+async def get_time(message: str, channel: TextChannel, client: Client):
+    await channel.send(message)
+    try:
+        response = await client.wait_for('message', timeout=120)
+    except asyncio.TimeoutError:
+        return await channel.send('Sorry, you took too long to make a choice.')
+    return response
+
+
+async def get_start_end_time(channel: TextChannel, client: Client):
+    start = get_time("Please type the start time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
+    end = get_time("Please type the end time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
+    start = datetime.strptime(start, "%m/%d/%Y, %H:%M:%S")
+    end = datetime.strptime(end, "%m/%d/%Y, %H:%M:%S")
+
+    return start, end
 
 
 class Scheduler:
@@ -10,9 +29,10 @@ class Scheduler:
         self.modelsvc = modelsvc
         self.notifiersvc = notifiersvc
 
-    def schedule(self, uid: int, starttime: datetime, endtime: datetime, channel: TextChannel, client: Client):
-        self.modelsvc.add_schedule(uid, starttime, endtime)
-        potential_meetings = self.modelsvc.find_meetings(starttime, endtime, self.meeting_length)
+    def schedule(self, uid: int, channel: TextChannel, client: Client):
+        start_time, end_time = get_start_end_time(channel, client)
+        self.modelsvc.add_schedule(uid, start_time, end_time)
+        potential_meetings = self.modelsvc.find_meetings(start_time, end_time, self.meeting_length)
         potential_meetings = potential_meetings[0:5]
 
         if potential_meetings:
