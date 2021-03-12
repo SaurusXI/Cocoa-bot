@@ -76,3 +76,14 @@ class NotifierService:
             user_id = meeting_info['user']
             if user_id == new_meeting_choice:
                 self.bookingsvc.reschedule_meeting(user_id, old_meeting_choice, user.id)
+
+    async def notify_multiple_meetings(self, user: User, channel: TextChannel):
+        user_meetings_notif = 'List of all the meetings you have booked :\n'
+        all_user_meetings = self.bookingsvc.list_all_meetings(user.id)
+        for meeting_info in all_user_meetings:
+            user_id2 = meeting_info['user2']
+            user_meetings_notif += 'Meeting with <@{}>'.format(user_id2)
+        # Print to channel
+        await channel.send(
+            user_meetings_notif
+        )

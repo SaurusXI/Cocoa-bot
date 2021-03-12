@@ -26,3 +26,7 @@ class Scheduler:
     def reschedule(self, uid: int, user: User, channel: TextChannel, client: Client):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
         self.notifiersvc.notify_reschedule(scheduled_meetings, user, channel, client)
+
+    # List all meetings
+    def list_booked_meetings(self, user: User, channel: TextChannel):
+        self.notifiersvc.notify_multiple_meetings(user, channel)
