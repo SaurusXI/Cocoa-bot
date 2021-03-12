@@ -8,9 +8,9 @@ from discord import Client, TextChannel, User
 async def get_time(message: str, channel: TextChannel, client: Client):
     await channel.send(message)
     try:
-        response = await client.wait_for('message', timeout=120)
+        response = await client.wait_for('message', timeout=300)
     except asyncio.TimeoutError:
-        return await channel.send('Sorry, you took too long to make a choice.')
+        return await channel.send('Sorry, you took too long to decide !')
     return response
 
 
