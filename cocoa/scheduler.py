@@ -18,7 +18,7 @@ class Scheduler:
         if potential_meetings:
             # Call notifier service and send notification of possible meetings
             self.notifiersvc.notify_schedule(potential_meetings, channel, client)
-    
+
     def cancel(self, uid: int, channel: TextChannel, client: Client):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
         self.notifiersvc.notify_cancel(scheduled_meetings, channel, client)
@@ -27,6 +27,8 @@ class Scheduler:
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
         self.notifiersvc.notify_reschedule(scheduled_meetings, user, channel, client)
 
-    # List all meetings
     def list_booked_meetings(self, user: User, channel: TextChannel):
         self.notifiersvc.notify_multiple_meetings(user, channel)
+
+    def delete_user(self, author):
+        self.modelsvc.delete_user(author)
