@@ -3,12 +3,14 @@ from discord import Client, Message
 from config import ConfigService
 from scheduler import Scheduler
 
+from cocoa.helpers import envloader
+
 
 class Controller:
-    def __init__(self, prefix: str, configsvc: ConfigService, scheduler: Scheduler):
+    def __init__(self, configsvc: ConfigService, scheduler: Scheduler):
         self.configsvc = configsvc
         self.schedulersvc = scheduler
-        self.prefix = prefix
+        self.prefix = envloader.config['prefix']
 
     async def handle_message(self, message: Message, client: Client):
         if message.author == client.user:

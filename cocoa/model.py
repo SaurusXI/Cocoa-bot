@@ -6,7 +6,9 @@ from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgres://user:mysecretpassword@host/dbname"
+from cocoa.helpers import envloader
+
+db_string = envloader.config['db_string']
 db = create_engine(db_string)
 base = declarative_base()
 

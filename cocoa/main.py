@@ -1,15 +1,13 @@
+import cocoa
+
+from yaml import load, Loader
 import discord
-from dotenv import dotenv_values
 
-from cocoa import booking, config, notifier, scheduler, controller
+from cocoa.helpers import envloader
 
-
-env_path = 'ENV_PATH_HERE'
+# from cocoa import booking, config, notifier, scheduler, controller
 
 client = discord.Client()
-
-config = dotenv_values(env_path)
-
 
 @client.event
 async def on_ready():
@@ -22,4 +20,4 @@ async def on_message(message):
     pass
 
 
-client.run('bot token here')
+client.run(envloader.config['bot_token'])
