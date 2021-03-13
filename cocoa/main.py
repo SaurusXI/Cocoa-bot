@@ -1,14 +1,17 @@
+import os
+
+from yaml import load, Loader
 import discord
-from dotenv import dotenv_values
 
-from cocoa import booking, config, notifier, scheduler, controller
+# from cocoa import booking, config, notifier, scheduler, controller
 
 
-env_path = 'ENV_PATH_HERE'
+config_path = os.path.join('..', 'config.yaml')
 
 client = discord.Client()
 
-config = dotenv_values(env_path)
+with open(config_path, 'r') as f:
+    config = load(f, Loader=Loader)
 
 
 @client.event
