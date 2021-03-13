@@ -10,7 +10,7 @@ class Controller:
         self.schedulersvc = scheduler
         self.prefix = prefix
 
-    def handle_message(self, message: Message, client: Client):
+    async def handle_message(self, message: Message, client: Client):
         if message.author == client.user:
             return
         
@@ -33,6 +33,4 @@ class Controller:
         elif command == 'list_all_meetings':
             self.schedulersvc.list_booked_meetings(author.id, channel)
         else:
-            await channel.send(
-                "Wrong command."
-            )
+            await message.channel.send("Sorry, I'm not sure what you mean. Please use the help command for a list of commands you can use.")
