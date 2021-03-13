@@ -6,12 +6,11 @@ from cocoa.booking import BookingService
 
 # main class for notification service
 class NotifierService:
-    def __init__(self, bookingsvc: BookingService, current_user_id: int):
+    def __init__(self, bookingsvc: BookingService):
         self.bookingsvc = bookingsvc
-        self.current_user_id = current_user_id
 
     # Notify method
-    async def notify_schedule(self, all_meetings, channel: TextChannel, client: Client):
+    async def notify_schedule(self, all_meetings, channel: TextChannel, client: Client, current_user_id: int):
         message_response = ''
         for meeting_info in all_meetings:
             user_id, start, end = meeting_info['user'], meeting_info['start'], meeting_info['end']
@@ -28,7 +27,7 @@ class NotifierService:
         for meeting_info in all_meetings:
             user_id = meeting_info['user']
             if user_id == meeting_choice:
-                self.bookingsvc.book_meeting(meeting_info, self.current_user_id)
+                self.bookingsvc.book_meeting(meeting_info, current_user_id)
 
     async def notify_cancel(self, all_meetings, channel: TextChannel, client: Client):
         message_response = ''
