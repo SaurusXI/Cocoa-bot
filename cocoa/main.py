@@ -1,13 +1,21 @@
-import cocoa
+from datetime import timedelta
 
-from yaml import load, Loader
 import discord
 
 from cocoa.helpers import envloader
-
-# from cocoa import booking, config, notifier, scheduler, controller
+from cocoa import booking, config, notifier, scheduler, controller, model
 
 client = discord.Client()
+
+meeting_length = timedelta(minutes=30)
+
+modelsvc = model.ModelService()
+bookingsvc = booking.BookingService(modelsvc)
+notifiersvc = notifier.NotifierService(bookingsvc)
+schedulersvc = scheduler.Scheduler(modelsvc, notifiersvc, meeting_length)
+configsvc = config.ConfigService(modelsvc)
+controllersvc = controller.Controller(configsvc, schedulersvc)
+
 
 @client.event
 async def on_ready():
@@ -16,8 +24,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # route stuff using controller
-    pass
+    controllersvc.handle_message(message, client)
 
 
 client.run(envloader.config['bot_token'])
