@@ -24,10 +24,10 @@ class Controller:
         if command == 'setup':
             self.configsvc.register_user(author, channel, client)
         elif command == 'delete_me':
-            self.schedulersvc.delete_user(author, channel)
+            self.configsvc.delete_user(author.id, channel)
         # Scheduling meetings and related commands
         elif command == 'schedule_new':
-            self.schedulersvc.schedule(author.id)
+            self.schedulersvc.schedule(author.id, channel, client),
         elif command == 'schedule_cancel':
             self.schedulersvc.cancel(author.id, channel, client)
         elif command == 'list_all_meetings':

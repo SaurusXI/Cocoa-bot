@@ -23,7 +23,7 @@ class ConfigService:
         await channel.send('Make changes to your description')
 
         try:
-            updated_description = await client.wait_for('message', timeout = 300)
+            updated_description = await client.wait_for('message', timeout=300)
         except asyncio.TimeoutError:
             return await channel.send('Took too long, unable to update description')
 
