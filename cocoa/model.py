@@ -15,8 +15,10 @@ base = declarative_base()
 class Meeting(base):
     __tablename__ = 'meetings'
 
-    UID1 = Column(Integer, primary_key = True)
-    UID2 = Column(Integer, primary_key = True)
+    UID1 = Column(Integer, primary_key=True)
+    UID2 = Column(Integer, primary_key=True)
+    StartTime = Column(DateTime)
+    EndTime = Column(DateTime)
 
 # User TABLE
 class User(base):
@@ -42,8 +44,8 @@ class ModelService:
         base.metadata.create_all(db)
 
     # Operations for Meeting
-    def add_meeting(self, uid1: int, uid2: int):
-        meeting = Meeting(UID1 = uid1, UID2 = uid2)
+    def add_meeting(self, uid1: int, uid2: int, start: datetime, end: datetime):
+        meeting = Meeting(UID1=uid1, UID2=uid2, StartTime=start, EndTime=end)
         self.session.add(meeting)
         self.session.commit()
 
