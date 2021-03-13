@@ -25,7 +25,7 @@ class Controller:
 
         # User registration and related commands
         if command == 'setup':
-            self.configsvc.register_user(author, channel, client)
+            self.configsvc.config_user(author, channel, client)
         elif command == 'delete me':
             self.configsvc.delete_user(author.id, channel)
         # Scheduling meetings and related commands
