@@ -7,7 +7,7 @@ class BookingService:
 
     def book_meeting(self, meeting_choice, current_user_id):
         other_user, start, end = meeting_choice['user'], meeting_choice['start'], meeting_choice['end']
-        self.modelsvc.add_meeting(other_user, current_user_id)
+        self.modelsvc.add_meeting(other_user, current_user_id, start, end)
         self.modelsvc.delete_schedule(other_user, start, end)
 
     def cancel_meeting(self, meeting_choice):
