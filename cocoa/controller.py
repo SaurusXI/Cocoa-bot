@@ -13,6 +13,7 @@ class Controller:
         self.prefix = envloader.config['prefix']
 
     async def handle_message(self, message: Message, client: Client):
+        print(client, message)
         if message.author == client.user:
             return
         
@@ -27,14 +28,14 @@ class Controller:
         if command == 'setup':
             await self.configsvc.config_user(author, channel, client)
         elif command == 'delete me':
-            await self.configsvc.delete_user(author.id, channel)
+            await self.configsvc.delete_user(author, channel)
         # Scheduling meetings and related commands
         elif command == 'schedule new':
-            self.schedulersvc.schedule(author.id, channel, client),
+            await self.schedulersvc.schedule(author.id, channel, client),
         elif command == 'schedule cancel':
-            self.schedulersvc.cancel(author.id, channel, client)
+            await self.schedulersvc.cancel(author.id, channel, client)
         elif command == 'list meetings':
-            self.schedulersvc.list_booked_meetings(author.id, channel)
+            await self.schedulersvc.list_booked_meetings(author.id, channel)
         else:
             await message.channel.send("Sorry, I'm not sure what you mean. Please use the help command for a list of "
                                        "commands you can use.")

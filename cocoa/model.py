@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import create_engine
 from sqlalchemy import and_, or_
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, DateTime, BigInteger
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
@@ -12,31 +12,34 @@ db_string = envloader.config['db_string']
 db = create_engine(db_string)
 base = declarative_base()
 
+
 # Declare tables
 # Meeting TABLE
 class Meeting(base):
     __tablename__ = 'meetings'
 
-    UID1 = Column(Integer, primary_key=True)
-    UID2 = Column(Integer, primary_key=True)
+    UID1 = Column(BigInteger, primary_key=True)
+    UID2 = Column(BigInteger, primary_key=True)
     StartTime = Column(DateTime)
     EndTime = Column(DateTime)
+
 
 # User TABLE
 class User(base):
     __tablename__ = 'users'
 
-    UID = Column(Integer, primary_key = True)
+    UID = Column(BigInteger, primary_key=True)
     Description = Column(String)
     Username = Column(String)
+
 
 # Schedule TABLE
 class Schedule(base):
     __tablename__ = 'schedules'
 
-    UID = Column(Integer, primary_key = True)
-    StartTime = Column(DateTime, primary_key = True)
-    EndTime = Column(DateTime, primary_key = True)
+    UID = Column(BigInteger, primary_key=True)
+    StartTime = Column(DateTime, primary_key=True)
+    EndTime = Column(DateTime, primary_key=True)
 
 
 # Main model class
@@ -68,8 +71,8 @@ class ModelService:
         return result
 
     # Operations for User
-    def add_user(self, uid: int, description: str):
-        user = User(UID = uid, Description = description)
+    def add_user(self, uid: int, username: str, description: str):
+        user = User(UID=uid, Username=username, Description=description)
         self.session.add(user)
         self.session.commit()
 
@@ -89,7 +92,7 @@ class ModelService:
 
     # Operations for Schedule
     def add_schedule(self, uid: int, start: datetime, end: datetime):
-        schedule = Schedule(UID = uid, StartTime = start, EndTime = end)
+        schedule = Schedule(UID=uid, StartTime=start, EndTime=end)
         self.session.add(schedule)
         self.session.commit()
 

@@ -15,8 +15,8 @@ async def get_time(message: str, channel: TextChannel, client: Client):
 
 
 async def get_start_end_time(channel: TextChannel, client: Client):
-    start = get_time("Please type the start time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
-    end = get_time("Please type the end time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
+    start = await get_time("Please type the start time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
+    end = await get_time("Please type the end time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
     start = datetime.strptime(start, "%m/%d/%Y, %H:%M:%S")
     end = datetime.strptime(end, "%m/%d/%Y, %H:%M:%S")
 
@@ -29,8 +29,8 @@ class Scheduler:
         self.modelsvc = modelsvc
         self.notifiersvc = notifiersvc
 
-    def schedule(self, uid: int, channel: TextChannel, client: Client):
-        start_time, end_time = get_start_end_time(channel, client)
+    async def schedule(self, uid: int, channel: TextChannel, client: Client):
+        start_time, end_time = await get_start_end_time(channel, client)
         self.modelsvc.add_schedule(uid, start_time, end_time)
         potential_meetings = self.modelsvc.find_meetings(start_time, end_time, self.meeting_length)
         potential_meetings = potential_meetings[0:5]

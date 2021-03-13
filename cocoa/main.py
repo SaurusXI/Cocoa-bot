@@ -24,7 +24,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    controllersvc.handle_message(message, client)
+    await controllersvc.handle_message(message, client)
 
 
 client.run(envloader.config['bot_token'])
