@@ -1,7 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta
-from notifier import NotifierService
-from model import ModelService
+from cocoa.notifier import NotifierService
+from cocoa.model import ModelService
 from discord import Client, TextChannel, User
 
 

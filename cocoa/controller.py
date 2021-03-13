@@ -1,7 +1,7 @@
 from discord import Client, Message
 
-from config import ConfigService
-from scheduler import Scheduler
+from cocoa.config import ConfigService
+from cocoa.scheduler import Scheduler
 
 from cocoa.helpers import envloader
 

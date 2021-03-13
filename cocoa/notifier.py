@@ -1,7 +1,7 @@
 import asyncio
 from discord import Client, TextChannel, User
-from model import ModelService
-from booking import BookingService
+from cocoa.model import ModelService
+from cocoa.booking import BookingService
 
 
 # main class for notification service
