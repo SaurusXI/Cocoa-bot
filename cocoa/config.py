@@ -1,12 +1,18 @@
 import asyncio
 from discord import User, Client, TextChannel
 
-from model import ModelService
+from cocoa.model import ModelService
 
 
 class ConfigService:
     def __init__(self, modelsvc: ModelService):
         self.modelsvc = modelsvc
+
+    async def config_user(self, user: User, channel: TextChannel, client: Client):
+        if not self.modelsvc.read_user(user.id):
+            self.register_user(user, channel, client)
+        else:
+            self.modify_user(user, channel, client)
 
     async def register_user(self, user: User, channel: TextChannel, client: Client):
         await channel.send('Tell me a little more about yourself!')

@@ -1,4 +1,4 @@
-from model import ModelService
+from cocoa.model import ModelService
 
 
 class BookingService:

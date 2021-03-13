@@ -1,7 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta
-from notifier import NotifierService
-from model import ModelService
+from cocoa.notifier import NotifierService
+from cocoa.model import ModelService
 from discord import Client, TextChannel, User
 
 
@@ -37,7 +37,7 @@ class Scheduler:
 
         if potential_meetings:
             # Call notifier service and send notification of possible meetings
-            self.notifiersvc.notify_schedule(potential_meetings, channel, client)
+            self.notifiersvc.notify_schedule(potential_meetings, channel, client, current_user_id=uid)
 
     def cancel(self, uid: int, channel: TextChannel, client: Client):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
