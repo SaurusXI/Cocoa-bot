@@ -10,7 +10,7 @@ class Controller:
     def __init__(self, configsvc: ConfigService, scheduler: Scheduler):
         self.configsvc = configsvc
         self.schedulersvc = scheduler
-        self.prefix = envloader.config['prefix']
+        self.prefix = envloader.config.prefix
 
     async def handle_message(self, message: Message, client: Client):
         print(client, message)

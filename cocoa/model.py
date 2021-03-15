@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 from cocoa.helpers import envloader
 
-db_string = envloader.config['db_string']
+db_string = envloader.config.SQLALCHEMY_DATABASE_URL
 db = create_engine(db_string)
 base = declarative_base()
 
