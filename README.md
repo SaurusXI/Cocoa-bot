@@ -13,9 +13,9 @@ To add this bot to your server: ...
 - [x] Delete yourself from the database `cocoapls delete me`
 
 
-## What's next:
+## What's next::rocket:
 - [ ] Integrate with google meet or other services for setting up meetings
-
+- [ ] Add more commands and options like reacting with a sticker for a specific action.
 
 ###
 ## Architecture Diagram
