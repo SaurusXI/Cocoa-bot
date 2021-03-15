@@ -15,7 +15,7 @@ To add this bot to your server: ...
 - [x] Cancel the schedualed meetigns `schedule cancel`
 - [x] Delete yourself from the database `cocoapls delete me`
 
-<img src="https://media.giphy.com/media/cp964FhZEG65dguOXo/giphy.gif" width="400">
+<img src="https://media.giphy.com/media/cp964FhZEG65dguOXo/giphy.gif" width="600">
 
 ## What's next::rocket:
 - [ ] Integrate with google meet or other services for setting up meetings
