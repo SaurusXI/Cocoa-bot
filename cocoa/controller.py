@@ -16,7 +16,7 @@ class Controller:
         print(client, message)
         if message.author == client.user:
             return
-        
+
         if not message.content.startswith(self.prefix):
             return
 
