@@ -21,7 +21,7 @@ To add this bot to your server: ...
 - [ ] Add more commands and options like reacting with a sticker for a specific action.
 
  
-## How we built it :space_invader: computer:
+## How we built it :space_invader: :computer:
 For Cocoa we used _Python 3_ and the _pubic API for Discord_ and also _ProgreSQL_ for the dabase and _SQL Alchemy_ for working with the database.
 
 
