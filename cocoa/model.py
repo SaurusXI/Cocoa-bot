@@ -20,8 +20,8 @@ class Meeting(base):
 
     UID1 = Column(BigInteger, primary_key=True)
     UID2 = Column(BigInteger, primary_key=True)
-    StartTime = Column(DateTime)
-    EndTime = Column(DateTime)
+    StartTime = Column(DateTime, primary_key=True)
+    EndTime = Column(DateTime, primary_key=True)
 
 
 # User TABLE
@@ -66,6 +66,8 @@ class ModelService:
             result.append({
                 'user1': meeting.UID1,
                 'user2': meeting.UID2,
+                'start': meeting.StartTime,
+                'end': meeting.EndTime,
             })
 
         return result
@@ -112,6 +114,7 @@ class ModelService:
 
     def delete_schedule(self, uid: int, start: datetime, end: datetime):
         schedule = self.read_schedule(uid, start, end)
+        print(f'Schedule: {schedule}')
         self.session.delete(schedule)
         self.session.commit()
 

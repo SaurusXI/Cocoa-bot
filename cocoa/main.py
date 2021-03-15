@@ -9,6 +9,8 @@ client = discord.Client()
 
 meeting_length = timedelta(minutes=30)
 
+
+# Initialize services
 modelsvc = model.ModelService()
 bookingsvc = booking.BookingService(modelsvc)
 notifiersvc = notifier.NotifierService(bookingsvc)
@@ -17,6 +19,7 @@ configsvc = config.ConfigService(modelsvc)
 controllersvc = controller.Controller(configsvc, schedulersvc)
 
 
+# Setup listeners
 @client.event
 async def on_ready():
     print('Logged in as {0.user}'.format(client))
