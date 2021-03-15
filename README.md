@@ -1,5 +1,5 @@
 # Cocoa-bot :robot:
-<img src="https://github.com/SaurusXI/Cocoa-bot/blob/main/assets/cocoa_logo.png" width="600">
+<img src="https://github.com/SaurusXI/Cocoa-bot/blob/main/assets/cocoa_logo.png" width="200">
 Cocoa is a Discord bot to schedule "coffee-breaks" for server members. You can use it just to chat with anyone that is interested to spend some time in a virtual "coffe-break" or to ask for help for a specific question and other types of meetings.
 
 ## Installation and setup :gear:
