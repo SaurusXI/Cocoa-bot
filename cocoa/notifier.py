@@ -16,40 +16,57 @@ class NotifierService:
         i = 0
         for meeting_info in all_meetings:
             user_id, start, end = meeting_info['user'], meeting_info['start'], meeting_info['end']
-            message_response += reactions[i] + ' for meeting with <@{}> from {} to {}\n\n'.format(user_id, start, end)
-            i += 1
-
+            if user_id != current_user_id:
+                message_response += reactions[i] + ' for meeting with <@{}> from {} to {}\n\n'.format(user_id, start, end)
+                i += 1
+            else:
+                continue
+        
         # Print to the text channel
-        await channel.send(
-            "{}Please choose which meeting you want to book, by typing its emoji".format(message_response))
-        try:
-            meeting_choice = await client.wait_for('message', timeout=120)
-        except asyncio.TimeoutError:
-            return await channel.send('Sorry, you took too long to make a choice.')
+        if len(message_response) > 0:
+            await channel.send(
+                "{}Please choose which meeting you want to book, by typing its emoji".format(message_response))
+            try:
+                meeting_choice = await client.wait_for('message', timeout=120)
+            except asyncio.TimeoutError:
+                return await channel.send('Sorry, you took too long to make a choice.')
+        else:
+            await channel.send(
+                "Looks like there are no matches till now")
         
         index = reactions.index(meeting_choice.content)
         meeting_info = all_meetings[index]
         self.bookingsvc.book_meeting(meeting_info, current_user_id)
         await channel.send('Coffee break booked!')
 
-    async def notify_cancel(self, all_meetings, channel: TextChannel, client: Client):
+    async def notify_cancel(self, all_meetings, channel: TextChannel, client: Client, current_user_id: int):
         message_response = ''
+        reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+        i = 0
         for meeting_info in all_meetings:
             user_id, start, end = meeting_info['user'], meeting_info['start'], meeting_info['end']
-            message_response += 'Meeting with <@{}> from {} to {}'.format(user_id, start, end)
+            if user_id != current_user_id:
+                message_response += reactions[i] + ' for meeting with <@{}> from {} to {}\n\n'.format(user_id, start, end)
+                i += 1
+            else:
+                continue
 
         # Print to the text channel
-        await channel.send(
-            "{}\n\nPlease choose which meeting you want to cancel, by typing out the User ID".format(message_response))
-        try:
-            meeting_choice = await client.wait_for('message', timeout=120)
-        except asyncio.TimeoutError:
-            return await channel.send('Sorry, you took too long to make a choice.')
+        if len(message_response) > 0:
+            await channel.send(
+                "{}\n\nPlease choose which meeting you want to cancel, by typing its emoji".format(message_response))
+            try:
+                meeting_choice = await client.wait_for('message', timeout=120)
+            except asyncio.TimeoutError:
+                return await channel.send('Sorry, you took too long to make a choice.')
+        else:
+            await channel.send(
+                "You haven't booked any meetings yet !")
 
-        for meeting_info in all_meetings:
-            user_id = meeting_info['user']
-            if user_id == meeting_choice:
-                self.bookingsvc.cancel_meeting(user_id)
+        index = reactions.index(meeting_choice.content)
+        meeting_info = all_meetings[index]
+        self.bookingsvc.cancel_meeting(meeting_info)
+        await channel.send('Meeting cancelled !')
 
     async def notify_reschedule(self, all_meetings, user: User, channel: TextChannel, client: Client):
         await channel.send(
