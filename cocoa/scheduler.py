@@ -15,11 +15,13 @@ async def get_time(message: str, channel: TextChannel, client: Client):
 
 
 async def get_start_end_time(channel: TextChannel, client: Client):
-    start = await get_time("Please type the start time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
-    end = await get_time("Please type the end time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
-    start = datetime.strptime(start, "%m/%d/%Y, %H:%M:%S")
-    end = datetime.strptime(end, "%m/%d/%Y, %H:%M:%S")
-
+    start = await get_time("What time suits you for a coffee break? Enter according to the format `dd/mm hour:minutes` in your local timezone", channel, client)
+    start = datetime.strptime(start.content, '%d/%m %H:%M')
+    # start = await get_time("Please type the start time of the meeting in the format %m/%d/%Y, %H:%M:%S", channel, client)
+    delta = await get_time("How long (in minutes) will you be available for?", channel, client)
+    start = start.replace(year=datetime.now().year)
+    delta = timedelta(minutes=int(delta.content))
+    end = start + delta
     return start, end
 
 
@@ -37,7 +39,7 @@ class Scheduler:
 
         if potential_meetings:
             # Call notifier service and send notification of possible meetings
-            self.notifiersvc.notify_schedule(potential_meetings, channel, client, current_user_id=uid)
+            await self.notifiersvc.notify_schedule(potential_meetings, channel, client, current_user_id=uid)
 
     def cancel(self, uid: int, channel: TextChannel, client: Client):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
@@ -49,4 +51,3 @@ class Scheduler:
 
     def list_booked_meetings(self, user: User, channel: TextChannel):
         self.notifiersvc.notify_multiple_meetings(user, channel)
-
