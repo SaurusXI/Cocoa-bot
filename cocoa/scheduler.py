@@ -41,9 +41,9 @@ class Scheduler:
             # Call notifier service and send notification of possible meetings
             await self.notifiersvc.notify_schedule(potential_meetings, channel, client, current_user_id=uid)
 
-    def cancel(self, uid: int, channel: TextChannel, client: Client):
+    def cancel(self, uid: int, channel: TextChannel, client: Client, user: User):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
-        self.notifiersvc.notify_cancel(scheduled_meetings, channel, client)
+        self.notifiersvc.notify_cancel(scheduled_meetings, channel, client, user)
 
     def reschedule(self, uid: int, user: User, channel: TextChannel, client: Client):
         scheduled_meetings = self.modelsvc.get_meetings(uid=uid)
