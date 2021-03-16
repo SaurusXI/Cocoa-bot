@@ -30,4 +30,4 @@ async def on_message(message):
     await controllersvc.handle_message(message, client)
 
 
-client.run(envloader.config['bot_token'])
+client.run(envloader.config.BOT_TOKEN)
